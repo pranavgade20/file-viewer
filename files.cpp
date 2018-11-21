@@ -12,7 +12,6 @@ Files::Files(QWidget *parent)
 
     list = new QListWidget(this);
 
-    qdir = new QDir;
     QFileInfoList fileList = QDir::drives();
     for (int i = 0; i < fileList.count(); ++i)
     {
@@ -20,14 +19,25 @@ Files::Files(QWidget *parent)
         list->insertItem(i, new QListWidgetItem(fileInfo.absoluteFilePath()));
     }
 
-    connect(list, SIGNAL(itemDoubleClicked(QListWidgetItem)), this, SLOT(updateList(QListWidgetItem)));
+    QObject::connect(list, &QListWidget::itemDoubleClicked, this, &Files::updateList);
 
     mainLayout->addWidget(list, 0, 0);
 
     setLayout(mainLayout);
 }
 
-void Files::updateList(QListWidgetItem item)
+void Files::updateList(QListWidgetItem *item)
 {
     list->clear();
+
+    QListWidgetItem it = *item;
+
+    qdir = new QDir(it.text());
+
+    QFileInfoList fileList = qdir->entryInfoList();
+    for (int i = 0; i < fileList.count(); ++i)
+    {
+        QFileInfo fileInfo = fileList.value(i);
+        list->insertItem(i, new QListWidgetItem(fileInfo.absoluteFilePath()));
+    }
 }

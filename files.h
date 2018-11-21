@@ -14,7 +14,7 @@ public:
     Files(QWidget *parent = 0);
 
 private slots:
-    void updateList(QListWidgetItem item);
+    void updateList(QListWidgetItem*);
 
 private:
 	QWidget *widget;
