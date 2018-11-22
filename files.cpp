@@ -28,16 +28,12 @@ Files::Files(QWidget *parent)
 
 void Files::updateList(QListWidgetItem *item)
 {
+    qdir = new QDir(item->text());
+
     list->clear();
 
-    QListWidgetItem it = *item;
-
-    qdir = new QDir(it.text());
-
-    QFileInfoList fileList = qdir->entryInfoList();
-    for (int i = 0; i < fileList.count(); ++i)
+    for (int i = 0; i < qdir->entryInfoList().count(); ++i)
     {
-        QFileInfo fileInfo = fileList.value(i);
-        list->insertItem(i, new QListWidgetItem(fileInfo.absoluteFilePath()));
+        list->insertItem(i, new QListWidgetItem( qdir->entryInfoList().value(i).absoluteFilePath()));
     }
 }
